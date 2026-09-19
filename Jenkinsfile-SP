@@ -1,0 +1,25 @@
+@Library('mylibrary')_
+node('built-in')
+{
+    stage('ConDownload')
+    {
+        cicd.gitDownload("maven")
+    }
+    stage('ConBuild')
+    {
+        cicd.buildArtifact()
+    }
+    stage('ConDeployment')
+    {
+        cicd.deployTomcat("ScriptedPipelineWithSharedLibraries","172.31.33.1","ssltestapp")
+    }
+    stage('ConTesting')
+    {
+        cicd.gitDownload("FunctionalTesting")
+        cicd.runSelenium("ScriptedPipelineWithSharedLibraries")
+    }
+    stage('ConDelivery')
+    {
+        cicd.deployTomcat("ScriptedPipelineWithSharedLibraries","172.31.40.4","sslprodapp")
+    }
+}
