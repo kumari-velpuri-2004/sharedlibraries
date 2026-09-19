@@ -15,6 +15,6 @@ def deployTomcat(jobname,ip,context)
 
 def runSelenium(jobname)
 {
-  sh "scp /var/lib/jenkins/workspace/${jobname}/testing.jar"
+  sh "java -jar /var/lib/jenkins/workspace/${jobname}/testing.jar"
 }
 
