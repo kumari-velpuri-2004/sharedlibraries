@@ -1,0 +1,59 @@
+@Library('mylibrary')_
+pipeline
+{
+    agent any
+    stages
+    {
+        stage('ConDownload')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.gitDownload("maven")
+                }
+            }
+        }
+        stage('ConBuild')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.buildArtifact()
+                }
+            }
+        }
+        stage('ConDeployment')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.deployTomcat("DeclarativePipelinewithSharedLibraries","172.31.33.1","dsltestapp")
+                }
+            }
+        }
+        stage('ConTesting')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.gitDownload("FunctionalTesting")
+                    cicd.runSelenium("DeclarativePipelinewithSharedLibraries")
+                }
+            }
+        }
+        stage('ConDelivery')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.deployTomcat("DeclarativePipelinewithSharedLibraries","172.31.40.4","dslprodapp")
+                }
+            }
+        }
+    }
+}
